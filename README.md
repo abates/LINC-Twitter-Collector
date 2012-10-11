@@ -29,4 +29,20 @@ Install git, ruby and rubygems as well as required gems:
 The first time you run one of the collector scripts it will prompt you for the credentials you created in the previous steps.  Copy/paste the consumer key, consumer secret, access token and access token secret into the prompts.  If any of the information needs to be reset you can simply edit the config file in ~/.LINC_Twitter_Collector/oauth_credentials.yml
 
 
+Using The Collector
+-------------------
+
+There are 3 scripts that can be used to collect twitter statuses:
+
+* follow.rb
+  This script will follow specified keywords
+    ./follow.rb "topic 1" "topic 2" ...
+
+* follow_trends.rb
+  This script will follow the trending topics
+
+* sample.rb
+  This script will follow the sample feed (uniform sample of all public tweets)
+
+All data is written to: data/[follow|trends|sample]/<keyword>/statuses_*.json.  The json files will rotate every 10000 tweets.  The first 10000 will be in statuses_001.json, the second 10000 will be in statuses_002.json and so on.
 
