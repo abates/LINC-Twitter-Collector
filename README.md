@@ -19,11 +19,10 @@ Install git, ruby and rubygems as well as required gems:
     git clone https://github.com/abates/LINC-Twitter-Collector.git
 
 ### Obtain Developer Credentials from Twitter
-1) Login to https://dev.twitter.com
-2) Create a new app at https://dev.twitter.com/apps/new
-   - Name, Description and Website are all required fields, any
-     website will work.
-3) Scroll to the bottom of the page and create a new access token
+1. Login to https://dev.twitter.com
+2. Create a new app at https://dev.twitter.com/apps/new
+   * Name, Description and Website are all required fields, any website will work.
+3. Scroll to the bottom of the page and create a new access token
 
 ### Run one of the programs
 
