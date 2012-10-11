@@ -18,6 +18,10 @@ Install git, ruby and rubygems as well as required gems:
 
     git clone https://github.com/abates/LINC-Twitter-Collector.git
 
+All of the downloaded code will be placed in the LINC-Twitter-Collector subdirectory of the current directory.  To run any of the programs you will need to change your directory to LINC-Twitter-Collector
+
+    cd LINC-Twitter-Collector
+
 ### Obtain Developer Credentials from Twitter
 1. Login to https://dev.twitter.com
 2. Create a new app at https://dev.twitter.com/apps/new
@@ -34,12 +38,10 @@ Using The Collector
 
 There are 3 scripts that can be used to collect twitter statuses:
 
-* follow.rb
-  This script will follow specified keywords
+* follow.rb This script will follow specified keywords
     ./follow.rb "topic 1" "topic 2" ...
 
-* follow_trends.rb
-  This script will follow the trending topics
+* follow_trends.rb This script will follow the trending topics
 
 * sample.rb
   This script will follow the sample feed (uniform sample of all public tweets)
