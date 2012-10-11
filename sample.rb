@@ -1,4 +1,4 @@
-#!/usr/bin/ruby1.9.3
+#!/usr/bin/env ruby
 
 require './twitter/collector'
 require './twitter/utils'
@@ -7,12 +7,7 @@ require 'set'
 @data_dir = 'data/sample'
 @topics = ARGV
 
-OAuthConfig = {
-  :consumer_key => "consumer key",
-  :consumer_secret => "consumer secret",
-  :access_token => "access token",
-  :access_token_secret => "access token secret"
-}
+OAuthConfig = load_credentials
 
 EventMachine.run do
   trap("INT") do

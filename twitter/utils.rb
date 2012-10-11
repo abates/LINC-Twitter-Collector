@@ -1,5 +1,44 @@
 #!/usr/bin/env ruby
 
+require 'yaml'
+
+PREFERENCES_DIR='~/.LINC_Twitter_Collector'
+
+def get_user_input message
+  while (true)
+    print "#{message}: "
+    response = gets
+    if (response.empty?)
+      puts "ERROR: please supply a value!"
+    else
+      return response.strip
+    end
+  end
+end
+
+def get_preferences_dir
+  dir = File.expand_path(PREFERENCES_DIR)
+  if (! File.exists?(dir))
+    Dir.mkdir(dir)
+  end
+  return dir
+end
+
+def load_credentials
+  file = File.expand_path("#{get_preferences_dir}/oauth_credentials.yml")
+  if (File.exists?(file))
+    credentials = YAML.load_file(file)
+  else
+    credentials = {}
+    credentials[:consumer_key] = get_user_input(   "    Input the consumer key")
+    credentials[:consumer_secret] = get_user_input("    Input the consumer secret")
+    credentials[:access_token] = get_user_input("       Input the access token")
+    credentials[:access_token_secret] = get_user_input("Input the access token secret")
+    File.open(file, 'w') { |f| f.write(credentials.to_yaml) }
+  end
+  return credentials
+end
+
 def mkdir(path)
   cwd = ''
   path.split(/\//).each do |d|

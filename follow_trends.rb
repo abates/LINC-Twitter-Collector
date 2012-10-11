@@ -4,12 +4,7 @@ require './twitter/collector'
 require './twitter/utils'
 require 'set'
 
-OAuthConfig = {
-  :consumer_key => "consumer key",
-  :consumer_secret => "consumer secret",
-  :access_token => "access token",
-  :access_token_secret => "access token secret"
-}
+OAuthConfig = load_credentials
 
 # where to store data
 @data_dir = 'data/trends'
