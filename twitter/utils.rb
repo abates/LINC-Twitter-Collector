@@ -7,7 +7,7 @@ PREFERENCES_DIR='~/.LINC_Twitter_Collector'
 def get_user_input message
   while (true)
     print "#{message}: "
-    response = gets
+    response = STDIN.gets
     if (response.empty?)
       puts "ERROR: please supply a value!"
     else
