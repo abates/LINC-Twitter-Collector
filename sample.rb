@@ -11,7 +11,7 @@ OAuthConfig = load_credentials
 
 EventMachine.run do
   trap("INT") do
-    write_status(nil)
+    close_file(nil)
     EventMachine.stop
   end
 

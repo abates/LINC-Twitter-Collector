@@ -61,7 +61,7 @@ end
 EventMachine.run do
   trap("INT") do
     @topics.each do |trend|
-      write_status(trend)
+      close_file(trend)
     end
     EventMachine.stop
   end

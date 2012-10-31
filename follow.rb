@@ -17,7 +17,7 @@ OAuthConfig = load_credentials
 EventMachine.run do
   trap("INT") do
     ARGV.each do |topic|
-      write_status(topic)
+      close_file(topic)
     end
     EventMachine.stop
   end

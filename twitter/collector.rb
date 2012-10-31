@@ -91,18 +91,26 @@ module Twitter
           @stream_req = @stream_conn.post(post)
         end
     
-        buffer = ""
+        buffer = ''
         @stream_req.stream do |chunk|
-          buffer += chunk
-          while line = buffer.slice!(/.+\r?\n/)
-            begin
-              next if (line =~ /^\s*$/)
-              block.call(JSON.parse(line))
-            rescue => e
-              @logger.error "Failed to handle status: '#{line}']"
-              @logger.error "#{e}"
-              connection_failed :stream
+          buffer << chunk
+          if (chunk =~ /\r?\n/)
+            lines = buffer.split(/\r?\n/, -1)
+            part = ''
+            if (lines.last !~ /^\s*$/)
+              part = lines.pop
             end
+            lines.each do |line|
+              begin
+                next if (line =~ /^\s*$/)
+                block.call(JSON.parse(line))
+              rescue => e
+                @logger.error "Failed to handle status: '#{line}']"
+                @logger.error "#{e}"
+                connection_failed :stream
+              end
+            end
+            buffer = part
           end
         end
     

@@ -63,16 +63,38 @@ end
 
 def add_status topic, status
   @statuses ||= {}
-  @statuses[topic] ||= []
-  @statuses[topic] << status unless (status.nil?)
+  @statuses[topic] ||= {
+    :filehandle => nil,
+    :count => 0,
+  }
 
-  if (@statuses[topic].length == 10000)
-    write_status(topic)
+  if (@statuses[topic][:filehandle].nil?)
+    @statuses[topic][:filehandle] = open_file(topic)
+  end
+ 
+  @statuses[topic][:filehandle].write(',') if (@statuses[topic][:count] > 0)
+  @statuses[topic][:filehandle].write(status.to_json)
+  @statuses[topic][:count] += 1
+  if (@statuses[topic][:count] == 10000)
+    close_file(topic)
+    @statuses[topic][:filehandle] = open_file(topic)
+    @statuses[topic][:count] = 0
   end
 end
 
-def write_status topic
-  return if (@statuses.length == 0)
+def open_file topic
+  filename = get_filename(topic)
+  file = File.open("#{@data_dir}/#{topic}/#{filename}", 'w');
+  file.write('[')
+  return file
+end
+
+def close_file topic
+  @statuses[topic][:filehandle].write(']')
+  @statuses[topic][:filehandle].close
+end
+
+def get_filename topic
   index = 1
   if (topic.nil?)
     dst_dir = "#{@data_dir}"
@@ -89,12 +111,33 @@ def write_status topic
     end
   end
 
-  dst_file = sprintf("statuses_%03d.json", index)
-
-  File.open("#{@data_dir}/#{topic}/#{dst_file}", 'w') { |f|
-    f.write(@statuses[topic].to_json)
-  }
+  return sprintf("statuses_%03d.json", index)
 end
+
+#def write_status topic
+  #return if (@statuses.length == 0)
+  #index = 1
+  #if (topic.nil?)
+    #dst_dir = "#{@data_dir}"
+  #else
+    #dst_dir = "#{@data_dir}/#{topic}" 
+  #end
+  #mkdir(dst_dir)
+#
+  #Dir.foreach(dst_dir) do |file|
+    #if (file =~ /statuses_(\d+)\.json/)
+      #if ($1.to_i >= index)
+        #index = $1.to_i + 1
+      #end
+    #end
+  #end
+#
+  #dst_file = sprintf("statuses_%03d.json", index)
+#
+  #File.open("#{@data_dir}/#{topic}/#{dst_file}", 'w') { |f|
+    #f.write(@statuses[topic].to_json)
+  #}
+#end
 
 def handle_status(status, topics=nil)
   return unless status['text']
